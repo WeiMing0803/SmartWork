@@ -24,16 +24,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<Workspace>(e => { e.Property(x => x.Name).HasMaxLength(128).IsRequired(); e.HasQueryFilter(x => !x.IsDeleted); });
-        builder.Entity<WorkspaceMember>(e => { e.HasIndex(x => new { x.WorkspaceId, x.UserId }).IsUnique(); e.HasQueryFilter(x => !x.IsDeleted); });
-        builder.Entity<Document>(e => { e.Property(x => x.Title).HasMaxLength(200).IsRequired(); e.HasQueryFilter(x => !x.IsDeleted); });
-        builder.Entity<DocumentTag>(e => { e.Property(x => x.Name).HasMaxLength(64).IsRequired(); e.HasIndex(x => new { x.DocumentId, x.Name }).IsUnique(); e.HasQueryFilter(x => !x.IsDeleted); });
-        builder.Entity<TaskItem>(e => { e.Property(x => x.Title).HasMaxLength(200).IsRequired(); e.HasQueryFilter(x => !x.IsDeleted); });
-        builder.Entity<FileAsset>(e => { e.ToTable("Files"); e.Property(x => x.FileName).HasMaxLength(255).IsRequired(); e.Property(x => x.StoragePath).HasMaxLength(512).IsRequired(); e.HasQueryFilter(x => !x.IsDeleted); });
-        builder.Entity<RefreshToken>(e => { e.Property(x => x.TokenHash).HasMaxLength(128).IsRequired(); e.HasIndex(x => x.TokenHash).IsUnique(); });
+        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        
         foreach (Microsoft.EntityFrameworkCore.Metadata.IMutableEntityType entityType in builder.Model.GetEntityTypes())
         {
-            if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType)) builder.Entity(entityType.ClrType).Property(nameof(BaseEntity.CreatedAt)).IsRequired();
+            if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType)) 
+                builder.Entity(entityType.ClrType).Property(nameof(BaseEntity.CreatedAt)).IsRequired();
         }
     }
 }
