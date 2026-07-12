@@ -44,6 +44,10 @@ SmartWork
 - `GET /health`：健康检查。
 - `POST /api/auth/register`：用户注册。
 - `POST /api/auth/login`：用户登录。
+- `POST /api/auth/refresh`：刷新令牌（令牌旋转，旧 refresh 立即失效）。
+- `POST /api/auth/logout`：撤销当前刷新令牌。
+- `GET /api/auth/me`：获取当前用户资料。
+- `POST /api/auth/change-password`：修改密码（改密后撤销该用户所有刷新令牌）。
 - `GET /api/workspaces`：获取当前用户工作空间。
 - `POST /api/workspaces`：创建工作空间。
 
@@ -82,3 +86,10 @@ SmartWork
 
 - 后续 C# 代码尽量不使用 `var`，优先使用明确类型，方便阅读和学习。
 - 只有在匿名类型、极复杂泛型或显式类型会明显降低可读性时，才考虑例外。
+- 使用最新的 C# 语法（项目当前为 C# 14 / .NET 10），优先采用：`file-scoped namespace`、`collection-expression`（如 `[]`、`..`）、`primary constructor`、`record` / `record struct`、`required` 成员、`init` 只读属性、`pattern matching`（含 `is`/`switch` 表达式与属性模式）、`target-typed new()`、`global using`、`nullable reference type`。在保证可读性的前提下，用新语法替代等价的旧写法。
+
+
+## Account
+- "userName": "Wei",
+- "password": "Aa123456!"
+- "email": "2570016347@qq.com",
