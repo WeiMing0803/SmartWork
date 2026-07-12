@@ -8,7 +8,6 @@ public sealed class FileAssetConfiguration : IEntityTypeConfiguration<FileAsset>
 {
     public void Configure(EntityTypeBuilder<FileAsset> builder)
     {
-        builder.ToTable("Files");
         builder.Property(x => x.FileName).HasMaxLength(255).IsRequired();
         builder.Property(x => x.StoragePath).HasMaxLength(512).IsRequired();
         builder.HasQueryFilter(x => !x.IsDeleted);
